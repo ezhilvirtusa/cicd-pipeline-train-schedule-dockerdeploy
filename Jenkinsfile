@@ -46,15 +46,15 @@ input 'Do you want to deploy to prod?'
 milestone(1)
 withCredentials([usernamePassword(credentialsId: 'webserver_login',usernameVariable:'USERNAME',passwordVariable: 'USERPASS')]) {
 script {
-sh "sshpass -p 'USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod\"docker pull ezhilc/trainapp:${env.BUILDNUMBER}\""
+sh "sshpass -p 'USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod \"docker pull ezhilc/trainapp:${env.BUILDNUMBER}\""
 try{
-sh  "sshpass -p 'USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod\"docker stop trainapp\""
-sh  "sshpass -p 'USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod\"docker rm trainapp\""
+sh  "sshpass -p 'USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod \"docker stop trainapp\""
+sh  "sshpass -p 'USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod \"docker rm trainapp\""
 }
 catch (eer){
 echo : 'caught error:$err'
 }
-sh  "sshpass -p 'USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod\"docker run --restart always --name trainapp -p 8080:8080 -d ezhilc/trainapp:${env.BUILDNUMBER}\""
+sh  "sshpass -p 'USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod \"docker run --restart always --name trainapp -p 8080:8080 -d ezhilc/trainapp:${env.BUILDNUMBER}\""
 }
 }
 }
