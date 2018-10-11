@@ -44,7 +44,7 @@ input 'Do you want to deploy to prod?'
 milestone(1)
 WithCredentials([usernamePassword(credentialsId: 'webserver_login',usernameVariable:'USERNAME',passwordVariable: 'USERPASS')
 script{
-sh "sshpass -p 'USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@prod_ip\"docker pull ezhilc/trainapp:${env.BUILDNUMBER}\"""
+sh "sshpass -p 'USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@prod_ip\"docker pull ezhilc/trainapp:${env.BUILDNUMBER}\""
 try{
 sh  sshpass -p 'USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@prod_ip\"docker stop trainapp\""
 sh  sshpass -p 'USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@prod_ip\"docker rm trainapp\""
