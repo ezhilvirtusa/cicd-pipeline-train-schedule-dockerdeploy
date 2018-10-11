@@ -8,7 +8,7 @@ pipeline {
                 archiveArtifacts artifacts: 'dist/trainSchedule.zip'
             }
         }
-    }
+   
     stage("Build Docker Image"){
 when{
 branch "master"
@@ -32,6 +32,7 @@ script{
     docker.withRegistry('https://registry.hub.docker.com','DockerID'){
 app.push("${env.BUILD_NUMBER}")
 app.push("latest")
+}
 }
 }
 }
