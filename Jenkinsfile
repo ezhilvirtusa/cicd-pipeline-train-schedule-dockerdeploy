@@ -52,7 +52,7 @@ sh  "sshpass -p 'USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@prod\"do
 catch (eer){
 echo : 'caught error:$err'
 }
-sh  "sshpass -p 'USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@prod\"docker run --restart always --name trainapp -p 8080:8080 -d ezhilc/trainapp:${env.BUILDNUMBER}\"""
+sh  "sshpass -p 'USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@prod\"docker run --restart always --name trainapp -p 8080:8080 -d ezhilc/trainapp:${env.BUILDNUMBER}\""
 }
 }
 }
