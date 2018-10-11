@@ -29,7 +29,7 @@ branch "master"
 }
 steps{
 script{
-docker.withRegistry('https://registry.hub.docker.com','DockerID')
+    docker.withRegistry('https://registry.hub.docker.com','DockerID'){
 app.push("${env.BUILD_NUMBER}")
 app.push("latest")
 }
