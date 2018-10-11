@@ -44,7 +44,7 @@ branch "master"
 steps {
 input 'Do you want to deploy to prod?'
 milestone(1)
-WithCredentials([usernamePassword(credentialsId: 'webserver_login',usernameVariable:'USERNAME',passwordVariable: 'USERPASS')]) {
+withCredentials([usernamePassword(credentialsId: 'webserver_login',usernameVariable:'USERNAME',passwordVariable: 'USERPASS')]) {
 script {
 sh "sshpass -p 'USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@prod\"docker pull ezhilc/trainapp:${env.BUILDNUMBER}\""
 try{
