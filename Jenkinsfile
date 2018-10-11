@@ -9,13 +9,13 @@ pipeline {
             }
         }
    
-    stage("Build Docker Image"){
+ stage("Build Docker Image"){
 when{
 branch "master"
 }
 steps{
 script{
-app=docker.build("ezhilc/testimage")
+app=docker.build("ezhilc/trainapp")
 app.inside{
 sh 'echo $(curl localhost:8080)'
 }
@@ -29,10 +29,30 @@ branch "master"
 }
 steps{
 script{
-    docker.withRegistry('https://registry.hub.docker.com','DockerID'){
+docker.withRegistry('https://registry.hub.docker.com','DockerID')
 app.push("${env.BUILD_NUMBER}")
 app.push("latest")
 }
+}
+
+stage("Deploy to prod"){
+when{
+branch "master"
+}
+
+input 'Do you want to deploy to prod?'
+milestone(1)
+WithCredentials([usernamePassword(credentialsId: 'webserver_login',usernameVariable:'USERNAME',passwordVariable: 'USERPASS')
+script{
+sh "sshpass -p 'USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@prod_ip\"docker pull ezhilc/trainapp:${env.BUILDNUMBER}\"""
+try{
+sh  sshpass -p 'USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@prod_ip\"docker stop trainapp\""
+sh  sshpass -p 'USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@prod_ip\"docker rm trainapp\""
+}
+catch (eer){
+echo : 'caught error:$err'
+}
+sh  sshpass -p 'USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@prod_ip\"docker run --restart always --name trainapp -p 8080:8080 -d ezhilc/trainapp:${env.BUILDNUMBER}\"""
 }
 }
 }
